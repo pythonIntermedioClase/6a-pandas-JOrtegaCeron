@@ -10,9 +10,9 @@ Sesión 6: Pandas I — Python Intermedio para Análisis de Datos · DIAN 2026
 # línea de código. Nunca dentro de funciones ni distribuidos a lo largo del
 # código. A medida que implementas cada módulo, descomenta el import
 # correspondiente.
-import numpy as np
-import pandas as pd
-from datetime import date
+#import numpy as np
+#import pandas as pd
+#from datetime import date
 
 # Sección 3:
 # from src.data_loader import cargar_declaraciones
@@ -143,7 +143,29 @@ def main():
 # =============================================================================
 # PUNTO DE ENTRADA
 # =============================================================================
+def probar_acceso_diccionario():
+    declaracion = {"nit": "800234567-0", "estado": "Pendiente"}
+    print(declaracion["valor_declarado"])
+
 
 if __name__ == "__main__":
-    main()
+    probar_acceso_diccionario()
+    # main()
 
+def revisar_declaracion(declaracion):
+    for clave, valor in declaracion.items():
+        print(f"{clave}: {valor}")
+    declaracion["estado"] = "Revisada"
+    print(f"\nEstado actualizado: {declaracion['estado']}")
+
+
+if __name__ == "__main__":
+    declaracion = {
+        "nit": "900123456-1",
+        "razon_social": "Comercializadora Andina S.A.S",
+        "valor_declarado": 4_500_000,
+        "estado": "Presentada",
+        "municipio": "Bogotá",
+    }
+    revisar_declaracion(declaracion)
+    # main()
