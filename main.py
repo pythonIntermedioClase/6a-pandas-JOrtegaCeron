@@ -185,3 +185,33 @@ if __name__ == "__main__":
 if __name__ == "__main__":
     explorar_dataframe()
     # main()
+
+    def analizar_serie(nits, valores):
+        serie = pd.Series(valores, index=nits)
+        print(f"Media:        {serie.mean()}")
+        print(f"Máximo:       {serie.max()}")
+        print(f"Mínimo:       {serie.min()}")
+        print(f"NIT con mayor valor: {serie.idxmax()}")
+
+
+if __name__ == "__main__":
+    nits    = ["900111222-0", "800333444-5", "700555666-1", "600777888-2", "500999000-3"]
+    valores = [4_500_000, 12_300_000, 2_100_000, 8_750_000, 15_200_000]
+    analizar_serie(nits, valores)
+    # main()
+
+    def construir_dataframe(lista_declaraciones):
+        df = pd.DataFrame(lista_declaraciones)
+        print(f"Elementos en la lista: {len(lista_declaraciones)}")
+        print(f"Filas en el DataFrame: {len(df)}")
+        return df
+
+
+if __name__ == "__main__":
+    declaraciones = [
+        {"nit": "900111222-0", "razon_social": "Empresa A", "valor_declarado": 4_500_000},
+        {"nit": "800333444-5", "razon_social": "Empresa B", "valor_declarado": 12_300_000},
+        {"nit": "700555666-1", "razon_social": "Empresa C", "valor_declarado": 2_100_000},
+    ]
+    construir_dataframe(declaraciones)
+    # main()
