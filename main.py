@@ -164,3 +164,24 @@ if __name__ == "__main__":
     }
     revisar_declaracion(declaracion)
     # main()
+
+    #def probar_acceso_serie():
+    #serie = pd.Series([100, 200, 300])
+    #print(serie[5])
+
+    def explorar_dataframe():
+        datos = {
+            "nit": ["900123456-1", "800234567-0", "700345678-9", "600456789-8"],
+            "razon_social": ["Empresa A", "Empresa B", "Empresa C", "Empresa D"],
+            "municipio": ["Bogotá", "Cali", "Medellín", "Barranquilla"],
+            "valor_declarado": [4_500_000, 12_300_000, 2_100_000, 8_750_000],
+            }
+        df = pd.DataFrame(datos)
+        print(df.index)
+        print(df.columns)
+        print(df.shape)
+
+
+if __name__ == "__main__":
+    explorar_dataframe()
+    # main()
