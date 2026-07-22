@@ -24,7 +24,7 @@ from src.data_loader import cargar_declaraciones, inspeccionar_datos, validar_nu
 from src.data_transformer import clasificar_por_valor, agregar_identificador_periodo, preparar_columnas_salida
 #
 # Sección 6:
-# from src.data_exporter import exportar_csv, exportar_excel_por_categoria
+from src.data_exporter import exportar_csv, exportar_excel_por_categoria
 # =============================================================================
 
 
@@ -133,14 +133,33 @@ def main():
         # Genera un CSV y un Excel en data/outputs/.
         # -----------------------------------------------------------------
         elif opcion == "4":
-            pass
+            if df_salida is None:
+                print("Primero transforma los datos con la opción 3.")
+            else:
+                exportar_csv(df_salida, CARPETA_RESULTADOS, "declaraciones_clasificadas")
+                exportar_excel_por_categoria(df_salida, CARPETA_RESULTADOS, "declaraciones", "nivel_riesgo")
+                print("Archivos generados en", CARPETA_RESULTADOS)
 
         # -----------------------------------------------------------------
         # OPCIÓN 5: PIPELINE COMPLETO
         # Ejecuta las cuatro etapas anteriores en secuencia.
         # -----------------------------------------------------------------
         elif opcion == "5":
-            pass
+            # Cargar
+            df = cargar_declaraciones(RUTA_DATOS)
+            print(f"Filas cargadas: {len(df)}")
+            # Inspeccionar
+            inspeccionar_datos(df)
+            validar_nulos(df, COLUMNAS_CRITICAS)
+            # Transformar
+            df = clasificar_por_valor(df, umbral_alto=10_000_000, umbral_medio=5_000_000)
+            df = agregar_identificador_periodo(df)
+            df_salida = preparar_columnas_salida(df, COLUMNAS_SALIDA)
+            print(df_salida.head())
+            # Exportar
+            exportar_csv(df_salida, CARPETA_RESULTADOS, "declaraciones_clasificadas")
+            exportar_excel_por_categoria(df_salida, CARPETA_RESULTADOS, "declaraciones", "nivel_riesgo")
+            print("Pipeline completo. Archivos generados en", CARPETA_RESULTADOS)
 
         else:
             print("  Opción no válida. Intenta de nuevo.")
