@@ -28,8 +28,9 @@ def cargar_declaraciones(ruta, columnas=None):
     # Si se recibe una lista en `columnas`, úsala en el parámetro usecols.
     # Si `columnas` es None, carga todas las columnas.
     # Retorna el DataFrame cargado.
-    pass
 
+    df = pd.read_csv("data/input/declaraciones_iva_2025.csv")
+    print(df.head())
 
 def inspeccionar_datos(df):
     """
