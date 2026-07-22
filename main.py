@@ -18,7 +18,7 @@ from datetime import date
 # from src.data_loader import cargar_declaraciones
 #
 # Sección 4 — agrega las dos funciones nuevas al import de data_loader:
-# from src.data_loader import cargar_declaraciones, inspeccionar_datos, validar_nulos
+from src.data_loader import cargar_declaraciones, inspeccionar_datos, validar_nulos
 #
 # Sección 5:
 # from src.data_transformer import clasificar_por_valor, agregar_identificador_periodo, preparar_columnas_salida
@@ -105,7 +105,11 @@ def main():
         # Funciones disponibles: inspeccionar_datos(), validar_nulos()
         # -----------------------------------------------------------------
         elif opcion == "2":
-            pass
+            if df is None:
+                print("Primero carga los datos con la opción 1.")
+            else:
+                inspeccionar_datos(df)
+                validar_nulos(df, COLUMNAS_CRITICAS)
 
         # -----------------------------------------------------------------
         # OPCIÓN 3: TRANSFORMACIÓN
