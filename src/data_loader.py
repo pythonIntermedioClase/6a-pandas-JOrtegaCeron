@@ -56,9 +56,21 @@ def inspeccionar_datos(df):
     print(df.isnull().sum().sum())
     print("\n=== Filas duplicadas ===")
     print(df.duplicated().sum())
-
+    print("\n=== Columnas de texto ===")
+    for col in df.select_dtypes(include="object").columns:
+        n = df[col].nunique()
+        print(f"{col}: {n} valores únicos")
+        if n < 20:
+            print(df[col].value_counts())
 
 def validar_nulos(df, columnas_criticas):
+    for columna in columnas_criticas:
+        nulos = df[columna].isnull().sum()
+        if nulos > 0:
+            print(f"⚠️  {columna}: {nulos} nulos")
+        else:
+            print(f"✓ {columna}: sin nulos")
+    
     """
     Revisa que las columnas críticas no tengan valores faltantes.
 
