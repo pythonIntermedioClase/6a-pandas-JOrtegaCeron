@@ -180,6 +180,7 @@ if __name__ == "__main__":
         print(df.index)
         print(df.columns)
         print(df.shape)
+        df.to_excel("declaraciones.xlsx")
 
 
 if __name__ == "__main__":

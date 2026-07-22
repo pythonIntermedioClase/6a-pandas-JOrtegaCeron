@@ -23,14 +23,15 @@ def cargar_declaraciones(ruta, columnas=None):
         cargar_declaraciones("datos/declaraciones_iva_2025.csv")
         cargar_declaraciones("datos/declaraciones_iva_2025.csv", columnas=["nit", "valor_declarado"])
     """
-    # TODO: Usa pd.read_csv() para cargar el archivo desde `ruta`.
-    # Fuerza las columnas "nit" y "codigo_municipio" a tipo str 
-    # Si se recibe una lista en `columnas`, úsala
-    # Si `columnas` es None, carga todas las columnas.
-    # Retorna el DataFrame cargado.
+    dtype = {}
+    if columnas is None or "nit" in columnas:
+        dtype["nit"] = str
+    if columnas is None or "codigo_municipio" in columnas:
+        dtype["codigo_municipio"] = str
 
-    df = pd.read_csv("data/input/declaraciones_iva_2025.csv")
-    print(df.head())
+    df = pd.read_csv(ruta, usecols=columnas, dtype=dtype or None)
+    return df
+
 
 def inspeccionar_datos(df):
     """
@@ -45,7 +46,16 @@ def inspeccionar_datos(df):
     Returns:
         None
     """
-    pass
+    print("=== Dimensiones ===")
+    print(df.shape)
+    print("\n=== Tipos de dato ===")
+    print(df.dtypes)
+    print("\n=== Nulos por columna ===")
+    print(df.isnull().sum())
+    print("\n=== Total celdas vacías ===")
+    print(df.isnull().sum().sum())
+    print("\n=== Filas duplicadas ===")
+    print(df.duplicated().sum())
 
 
 def validar_nulos(df, columnas_criticas):
@@ -65,10 +75,14 @@ def validar_nulos(df, columnas_criticas):
     Ejemplos:
         validar_nulos(df, ["nit", "valor_declarado", "estado"])
     """
-    # TODO: Recorre columnas_criticas con un ciclo for.
-    # Para cada columna, calcula si hay algún valor faltante y si lo hay imprime el nombre de la columna 
-    # y la cantidad de nulos encontrados.
-    pass
+    for columna in columnas_criticas:
+        if columna not in df.columns:
+            print(f"Columna no encontrada: {columna}")
+            continue
+
+        nulos = df[columna].isnull().sum()
+        if nulos > 0:
+            print(f"{columna}: {nulos} nulos")
 
 
 # =============================================================================
@@ -78,6 +92,11 @@ def validar_nulos(df, columnas_criticas):
 # No se ejecuta cuando main.py importa las funciones.
 # Actualiza las llamadas a medida que implementas cada función.
 # =============================================================================
+def probar_atributo_shape():
+    df = pd.read_csv("data/inputs/declaraciones_iva_2025.csv")
+    print(df.shape)
+
+probar_atributo_shape()
 if __name__ == "__main__":
     df = cargar_declaraciones("data/inputs/declaraciones_iva_2025.csv")
     inspeccionar_datos(df)
