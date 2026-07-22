@@ -156,7 +156,11 @@ def revisar_declaracion(declaracion):
         print(f"{clave}: {valor}")
     declaracion["estado"] = "Revisada"
     print(f"\nEstado actualizado: {declaracion['estado']}")
+def probar_np_where():
+    df = pd.read_csv("data/inputs/declaraciones_iva_2025.csv")
+    df["categoria"] = np.where(df["valor_declarado"] >= 5_000_000, "Alto", "Bajo", "Medio")
 
+probar_np_where()
 
 if __name__ == "__main__":
     declaracion = {

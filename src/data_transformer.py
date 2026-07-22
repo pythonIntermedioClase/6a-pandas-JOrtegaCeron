@@ -28,7 +28,16 @@ def clasificar_por_valor(df, umbral_alto, umbral_medio):
     Ejemplos:
         df = clasificar_por_valor(df, umbral_alto=10_000_000, umbral_medio=5_000_000)
     """
-    pass
+    df["nivel_riesgo"] = np.where(
+        df["valor_declarado"] >= umbral_alto,
+        "Alto",
+        np.where(
+            df["valor_declarado"] >= umbral_medio,
+            "Medio",
+            "Bajo",
+        ),
+    )
+    return df
 
 
 def agregar_identificador_periodo(df):
@@ -48,7 +57,8 @@ def agregar_identificador_periodo(df):
         df = agregar_identificador_periodo(df)
         # df["identificador_periodo"].iloc[0] → "900123456-1_202401"
     """
-    pass
+    df["identificador_periodo"] = df["nit"].astype(str) + "_" + df["periodo"].astype(str)
+    return df
 
 
 def preparar_columnas_salida(df, columnas):
@@ -67,7 +77,7 @@ def preparar_columnas_salida(df, columnas):
     Ejemplos:
         df_salida = preparar_columnas_salida(df, ["nit", "valor_declarado", "nivel_riesgo"])
     """
-    pass
+    return df[columnas]
 
 
 # =============================================================================
