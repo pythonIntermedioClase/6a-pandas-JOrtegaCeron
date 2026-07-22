@@ -21,7 +21,7 @@ from datetime import date
 from src.data_loader import cargar_declaraciones, inspeccionar_datos, validar_nulos
 #
 # Sección 5:
-# from src.data_transformer import clasificar_por_valor, agregar_identificador_periodo, preparar_columnas_salida
+from src.data_transformer import clasificar_por_valor, agregar_identificador_periodo, preparar_columnas_salida
 #
 # Sección 6:
 # from src.data_exporter import exportar_csv, exportar_excel_por_categoria
@@ -93,9 +93,9 @@ def main():
         # Completa los espacios marcados con ___ y ejecuta.
         # -----------------------------------------------------------------
         if opcion == "1":
-            # df = cargar_declaraciones(___)
-            # print(f"Filas cargadas: {___}")
-            pass
+            df = cargar_declaraciones(RUTA_DATOS)
+            print(f"Filas cargadas: {len(df)}")
+            
 
         # -----------------------------------------------------------------
         # OPCIÓN 2: INSPECCIÓN
@@ -120,7 +120,13 @@ def main():
         # Verifica que df no sea None antes de transformar.
         # -----------------------------------------------------------------
         elif opcion == "3":
-            pass
+            if df is None:
+                print("Primero carga los datos con la opción 1.")
+            else:
+                df = clasificar_por_valor(df, umbral_alto=10_000_000, umbral_medio=5_000_000)
+                df = agregar_identificador_periodo(df)
+                df_salida = preparar_columnas_salida(df, COLUMNAS_SALIDA)
+                print(df_salida.head())
 
         # -----------------------------------------------------------------
         # OPCIÓN 4: EXPORTACIÓN
@@ -158,9 +164,10 @@ def revisar_declaracion(declaracion):
     print(f"\nEstado actualizado: {declaracion['estado']}")
 def probar_np_where():
     df = pd.read_csv("data/inputs/declaraciones_iva_2025.csv")
-    df["categoria"] = np.where(df["valor_declarado"] >= 5_000_000, "Alto", "Bajo", "Medio")
+    df["categoria"] = np.where(df["valor_declarado"] >= 5_000_000, "Alto", np.where(df["valor_declarado"] >= 1_000_000, "Medio", "Bajo"))
+    print(df[["valor_declarado", "categoria"]].head())
 
-probar_np_where()
+#probar_np_where()
 
 if __name__ == "__main__":
     declaracion = {
@@ -223,4 +230,4 @@ if __name__ == "__main__":
         {"nit": "700555666-1", "razon_social": "Empresa C", "valor_declarado": 2_100_000},
     ]
     construir_dataframe(declaraciones)
-    # main()
+    main()
