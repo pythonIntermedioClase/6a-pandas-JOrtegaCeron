@@ -222,6 +222,11 @@ if __name__ == "__main__":
         print(f"Filas en el DataFrame: {len(df)}")
         return df
 
+def probar_exportar_excel():
+    df = pd.DataFrame({"a": [1, 2]})
+    df.to_excel("data/outputs/prueba.xlsx", index=False)
+
+probar_exportar_excel()
 
 if __name__ == "__main__":
     declaraciones = [

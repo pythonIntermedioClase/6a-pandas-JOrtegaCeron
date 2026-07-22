@@ -30,7 +30,11 @@ def exportar_csv(df, carpeta, nombre_base):
     # Construye el nombre del archivo
     # Construye la ruta completa
     # Exporta el resultado
-    pass
+    fecha_hoy = date.today().strftime("%Y%m%d")
+    nombre_archivo = f"{nombre_base}_{fecha_hoy}.csv"
+    ruta_completa = f"{carpeta}/{nombre_archivo}"
+    df.to_csv(ruta_completa, index=False)
+    print(f"CSV guardado: {ruta_completa}")
 
 
 def exportar_excel_por_categoria(df, carpeta, nombre_base, columna_categoria):
@@ -54,7 +58,19 @@ def exportar_excel_por_categoria(df, carpeta, nombre_base, columna_categoria):
         exportar_excel_por_categoria(df, "resultados", "declaraciones", "nivel_riesgo")
         # Genera hojas: Todos, Alto, Medio, Bajo
     """
-    pass
+    fecha_hoy = date.today().strftime("%Y%m%d")
+    nombre_archivo = f"{nombre_base}_{fecha_hoy}.xlsx"
+    ruta_completa = f"{carpeta}/{nombre_archivo}"
+
+    with pd.ExcelWriter(ruta_completa, engine="openpyxl") as writer:
+        df.to_excel(writer, sheet_name="Todos", index=False)
+
+        categorias = df[columna_categoria].unique()
+        for categoria in categorias:
+            df_categoria = df[df[columna_categoria] == categoria]
+            df_categoria.to_excel(writer, sheet_name=str(categoria), index=False)
+
+    print(f"Excel guardado: {ruta_completa}")
 
 
 # =============================================================================
